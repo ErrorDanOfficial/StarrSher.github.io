@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Охотник на аномалии</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-theme="white">
+  <div id="app">
+    <!-- Main Menu -->
+    <section id="screen-menu" class="screen visible">
+      <div class="logo">
+        <div class="logo-title">Охотник на аномалии</div>
+        <div class="logo-sub">10 секунд. Эхо. Эскалация.</div>
+      </div>
+
+      <div class="menu-grid">
+        <button class="btn primary" data-action="start">Start</button>
+        <button class="btn" data-action="select-character">Select Character</button>
+        <button class="btn" data-action="shop">Shop</button>
+        <button class="btn" data-action="upgrades">Upgrades</button>
+        <button class="btn" data-action="settings">Settings</button>
+        <button class="btn" data-action="credits">Credits</button>
+      </div>
+
+      <div class="meta">
+        <div class="meta-row">
+          <span>XP:</span>
+          <div class="xp-bar">
+            <div id="ui-xp-fill" class="xp-fill" style="width: 0%"></div>
+          </div>
+          <span id="ui-total-xp">0</span>
+        </div>
+        <div class="meta-row">
+          <span>Множитель:</span><span id="ui-multiplier">1.0x</span>
+        </div>
+      </div>
+
+      <div class="theme-switcher">
+        <label for="theme-select">Тема:</label>
+        <select id="theme-select" aria-label="Выбор темы">
+          <option value="white">Белая</option>
+          <option value="minecraft">Minecraft</option>
+          <option value="cyber">Киберпанк</option>
+          <option value="liquid">Liquid Glass</option>
+          <option value="skeuo">Скеоморфизм</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Auth Screen -->
+    <section id="screen-auth" class="screen">
+      <div class="gameover" style="max-width:420px;">
+        <div class="title">Вход / Регистрация</div>
+        <div class="settings">
+          <div class="row"><label for="auth-username">Имя пользователя</label><input id="auth-username" type="text" placeholder="user" /></div>
+          <div class="row"><label for="auth-password">Пароль</label><input id="auth-password" type="password" placeholder="••••••" /></div>
+          <div class="row"><button class="btn primary" id="auth-login">Войти</button><button class="btn" id="auth-register">Зарегистрироваться</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Character Select -->
+    <section id="screen-characters" class="screen">
+      <div class="toolbar">
+        <button class="btn" data-nav="back">← Назад</button>
+        <div class="title">Выбор персонажа</div>
+      </div>
+      <div id="character-grid" class="card-grid"></div>
+      <div id="character-preview" class="preview"></div>
+    </section>
+
+    <!-- Shop -->
+    <section id="screen-shop" class="screen">
+      <div class="toolbar">
+        <button class="btn" data-nav="back">← Назад</button>
+        <div class="title">Магазин</div>
+      </div>
+      <div class="tabs">
+        <button class="tab active" data-tab="skins">Скины</button>
+        <button class="tab" data-tab="characters">Персонажи</button>
+      </div>
+      <div id="shop-content" class="card-grid"></div>
+    </section>
+
+    <!-- Upgrades -->
+    <section id="screen-upgrades" class="screen">
+      <div class="toolbar">
+        <button class="btn" data-nav="back">← Назад</button>
+        <div class="title">Улучшения</div>
+      </div>
+      <div id="upgrades-grid" class="card-grid"></div>
+      <div class="hint">Клик по купленному улучшению — включить/выключить</div>
+    </section>
+
+    <!-- Settings -->
+    <section id="screen-settings" class="screen">
+      <div class="toolbar">
+        <button class="btn" data-nav="back">← Назад</button>
+        <div class="title">Настройки</div>
+      </div>
+      <div class="settings">
+        <div class="row">
+          <label for="volume-range">Громкость</label>
+          <input id="volume-range" type="range" min="0" max="1" step="0.01" aria-label="Громкость" />
+        </div>
+        <div class="row">
+          <label for="export-save">Экспорт прогресса</label>
+          <button class="btn" id="export-save" aria-label="Экспорт прогресса">Экспорт</button>
+        </div>
+        <div class="row">
+          <label for="import-file">Импорт прогресса</label>
+          <input id="import-file" type="file" accept="application/json" aria-label="Импорт прогресса" />
+        </div>
+        <div class="row">
+          <label for="reset-progress">Сброс прогресса</label>
+          <button class="btn danger" id="reset-progress" aria-label="Сбросить прогресс">Сбросить</button>
+        </div>
+        <div class="row">
+          <label for="btn-logout">Аккаунт</label>
+          <button class="btn" id="btn-logout" aria-label="Выйти из аккаунта">Выйти из аккаунта</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Credits -->
+    <section id="screen-credits" class="screen">
+      <div class="toolbar">
+        <button class="btn" data-nav="back">← Назад</button>
+        <div class="title">Credits</div>
+      </div>
+      <div class="credits">
+        <p>Игра создана специально для вас. Технологии: Canvas 2D, Web Audio, CSS.</p>
+      </div>
+    </section>
+
+    <!-- Game Screen -->
+    <section id="screen-game" class="screen">
+      <div class="game-ui">
+        <div class="hud-left">
+          <div>Раунд: <span id="hud-round">1</span></div>
+          <div>Время: <span id="hud-timer">10.0</span>s</div>
+        </div>
+        <div class="hud-center">
+          <div>Жизни: <span id="hud-lives">3</span></div>
+          <div>Очки: <span id="hud-score">0</span> (<span id="hud-mult">1.0x</span>)</div>
+        </div>
+        <div class="hud-right">
+          <button class="btn small" id="btn-pause">Пауза</button>
+          <button class="btn small" id="btn-exit">В меню</button>
+        </div>
+      </div>
+      <canvas id="game-canvas"></canvas>
+      <div id="toast" class="toast"></div>
+      <div id="mutator-wave" class="mutator-wave"></div>
+      <div id="pause-overlay" class="overlay hidden">
+        <div class="panel">
+          <div class="title">Пауза</div>
+          <button class="btn" id="btn-resume">Продолжить</button>
+          <button class="btn" id="btn-restart">Перезапуск цикла (R)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Over -->
+    <section id="screen-gameover" class="screen">
+      <div class="gameover">
+        <div class="title">Game Over</div>
+        <div class="stats">
+          <div>Очки за раунд: <span id="go-score">0</span></div>
+          <div>XP за раунд: <span id="go-round-xp">0</span></div>
+          <div>Общий XP: <span id="go-total-xp">0</span></div>
+          <div>Лучший результат: <span id="go-best">0</span></div>
+          <div>Кол-во эх: <span id="go-echoes">0</span></div>
+          <div>Убито врагов: <span id="go-kills">0</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="go-retry">Повторить</button>
+          <button class="btn" id="go-menu">Главное меню</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
+
+
